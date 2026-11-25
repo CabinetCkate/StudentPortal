@@ -1,0 +1,18 @@
+@model StudentPortal.Models.Student
+
+@{
+    ViewData["Title"] = "Студент туралы";
+}
+
+<h1>Студент туралы</h1>
+<dl class="row">
+    <dt class="col-sm-3">Аты-жөні</dt>
+    <dd class="col-sm-9">@Model.FullName</dd>
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+    <dt class="col-sm-3">Тобы</dt>
+    <dd class="col-sm-9">@Model.Group</dd>
+    <dt class="col-sm-3">Қабылданған күні</dt>
+    <dd class="col-sm-9">@Model.EnrollmentDate.ToString("yyyy-MM-dd")</dd>
+</dl>
+<a asp-action="Index" class="btn btn-secondary">Тізімге оралу</a>

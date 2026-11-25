@@ -1,0 +1,17 @@
+@model StudentPortal.ViewModels.StudentFormViewModel
+
+@{
+    ViewData["Title"] = "Студент қосу";
+}
+
+<h1>Студент қосу</h1>
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <partial name="_StudentForm" model="Model" />
+    <button type="submit" class="btn btn-primary">Сақтау</button>
+    <a asp-action="Index" class="btn btn-secondary">Болдырмау</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

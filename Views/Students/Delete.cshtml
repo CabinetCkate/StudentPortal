@@ -1,0 +1,19 @@
+@model StudentPortal.Models.Student
+
+@{
+    ViewData["Title"] = "Студентті жою";
+}
+
+<h1>Студентті жою</h1>
+<p>«@Model.FullName» студентін жоюға сенімдісіз бе?</p>
+<dl class="row">
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+    <dt class="col-sm-3">Тобы</dt>
+    <dd class="col-sm-9">@Model.Group</dd>
+</dl>
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" name="confirm" value="true" />
+    <button type="submit" class="btn btn-danger">Иә, жою</button>
+    <a asp-action="Index" class="btn btn-secondary">Болдырмау</a>
+</form>
