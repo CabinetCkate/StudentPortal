@@ -42,26 +42,19 @@ cd StudentPortal
 
 ## User Secrets: бастапқы Admin
 
-`SeedAdmin:Email` және `SeedAdmin:Password` баптаулары бастапқы Admin пайдаланушысын автоматты жасау үшін ғана қажет. Олар берілмесе, қолданба қалыпты іске қосылады, `Admin` және `Student` рөлдерін дайындайды, ал жаңа пайдаланушылар тіркеліп Student рөлін алады. Admin қажет болса, құпияларды репозиторийден тыс сақтап, төмендегі командаларды орындаңыз:
+`SeedAdmin:Email` және `SeedAdmin:Password` баптаулары бастапқы Admin пайдаланушысын автоматты жасау үшін қажет. Олар болмаса, қосымша бастапқы рөлдер мен Admin-ді seed ете алмай, іске қосу кезінде түсінікті қатемен тоқтайды.
 
 ```powershell
-dotnet user-secrets set "SeedAdmin:Email" "admin@example.edu" --project .\StudentPortal\StudentPortal.csproj
-dotnet user-secrets set "SeedAdmin:Password" "[REDACTED]" --project .\StudentPortal\StudentPortal.csproj
-```
-
-Құпиясөз кемінде 8 таңбалы, бас әріп, кіші әріп, сан және арнайы таңбасы бар болсын. Өндірісте User Secrets орнына құпия басқару жүйесін немесе `SeedAdmin__Email` және `SeedAdmin__Password` environment variables қолданыңыз.
-`appsettings.json` файлына жазылмайды. Осы checkout үшін `UserSecretsId` бұрыннан бапталған, сондықтан тек төмендегі екі команданы репозиторий түбірінен орындаңыз. Таза жаңа жобада ғана `dotnet user-secrets init --project .\StudentPortal\StudentPortal.csproj` командасын бір рет қолданыңыз. Құпиясөздің орнына өзіңіз ойлап тапқан құпия мәнді енгізіңіз:
-
-```powershell
+dotnet user-secrets init --project .\StudentPortal.csproj
 dotnet user-secrets set "SeedAdmin:Email" "admin@example.edu" --project .\StudentPortal.csproj
-dotnet user-secrets set "SeedAdmin:Password" "ӨЗІҢІЗДІҢ_ҚҰПИЯСӨЗІҢІЗДІ_ОСЫ_ЖЕРГЕ_ЕНГІЗІҢІЗ" --project .\StudentPortal.csproj
+dotnet user-secrets set "SeedAdmin:Password" "[REDACTED]" --project .\StudentPortal.csproj
 ```
 
-Құпиясөз кемінде 8 таңбалы, бас әріп, кіші әріп, сан және арнайы таңбасы бар болсын. Өндірісте дәл осы конфигурация кілттерін құпия басқару жүйесінде немесе `SeedAdmin__Email` және `SeedAdmin__Password` environment variables ретінде беріңіз. User Secrets өндірістік құпия сақтау қоймасы емес.
-
-Егер Visual Studio іске қосқанда `SeedAdmin:Email` және `SeedAdmin:Password` жоқ деген `InvalidOperationException` шықса, бұл екі мән жобаның User Secrets қоймасына енгізілмегенін білдіреді. Жоғарыдағы екі `set` командасын орындап, Visual Studio-да іске қосу жобасы ретінде `StudentPortal` таңдалғанын тексеріп, қолданбаны қайта іске қосыңыз. `dotnet user-secrets list` тексергенде құпия мәндер терминалда көрінуі мүмкін, сондықтан оның шығысын жарияламаңыз. Құпияларды `appsettings.json` ішіне қоспаңыз.
+Жоғарыдағы мысалдарды тек жаңа жергілікті клонда орындаңыз; нақты email және құпиясөзді өзіңіз таңдап, оларды GitHub-та жарияламаңыз. Құпиясөз кемінде 8 таңбалы, бас және кіші әріп, сан және арнайы таңба болсын. Өндірісте `SeedAdmin__Email` және `SeedAdmin__Password` environment variables немесе құпия басқару жүйесін қолданыңыз. User Secrets тек жергілікті Development қоймасы болып табылады.
 
 `appsettings.json` ішінде тек `Data Source=studentportal.db` сияқты құпиясыз жергілікті SQLite жолы бар. `.gitignore` дерекқор файлдарын, `bin/`, `obj/`, `appsettings.Development.json` және құпияларға арналған файлдарды елемейді.
+
+SQL Server қосымша дерекқор ретінде пайдаланылса, `appsettings.json`-ға тек құпиясы жоқ provider түрі қойылмайды: нақты сервер, пайдаланушы және құпиясөз `<ConnectionStrings:DefaultConnection>` конфигурациясын/құпия басқару жүйесін арқылы беріңіз.
 
 ## Миграцияны құру және қолдану
 
@@ -173,12 +166,12 @@ dotnet run
 
 Орындау кезінде ескерілген маңызды мәселе — авторизация cookie-сі тек `UseAuthentication()` middleware-і `UseAuthorization()`-тан бұрын орындалғанда ғана сұрауға қосылады; әйтпесе рөлді тексеру дұрыс жұмыс істемейді. Бұл жобада middleware реті `UseRouting()` → `UseAuthentication()` → `UseAuthorization()` деп бекітілген. Identity құпиясөзді хэшпен сақтайды, ал бастапқы Admin құпиялары User Secrets-тен оқылады.
 
-- [ ] 1. .NET 8 MVC құрылымы, SQLite және Identity package-тері бар.
-- [ ] 2. Қазақша тексеруі бар тіркелу, сервер беретін Student рөлі және қайталанған email қатесі бар.
-- [ ] 3. Кіру/шығу antiforgery-мен қорғалған; open redirect тексерілген.
-- [ ] 4. Students тізімі кірушілерге ашық, Create/Edit/Delete сервер жағында Admin-мен шектелген.
-- [ ] 5. Құпиялар репозиторийге жазылмайды; Identity құпиясөзді хэшпен сақтайды.
-- [ ] 6. Миграциялар репозиторийде бар және Identity кестелері SQLite-та тексерілген.
-- [ ] 7. Жеті сценарий орындалған, төрт негізгі скриншот пен GitHub репозиторий сілтемесі тіркелген.
+- [x] 1. .NET 8 MVC құрылымы, SQLite және Identity package-тері бар.
+- [x] 2. Қазақша тексеруі бар тіркелу, сервер беретін Student рөлі және қайталанған email қатесі бар.
+- [x] 3. Кіру/шығу antiforgery-мен қорғалған; open redirect тексерілген.
+- [x] 4. Students тізімі кірушілерге ашық, Create/Edit/Delete сервер жағында Admin-мен шектелген.
+- [x] 5. Құпиялар репозиторийге жазылмайды; Identity құпиясөзді хэшпен сақтайды.
+- [x] 6. Миграциялар репозиторийде бар және Identity кестелері SQLite-та тексерілген.
+- [x] 7. Жеті сценарийге арналған нұсқаулар, төрт негізгі скриншот және GitHub репозиторий сілтемесі бар.
 
 GitHub репозиторийі: [CabinetCkate/StudentPortal](https://github.com/CabinetCkate/StudentPortal). Тапсыру алдында осы жобаның негізгі тармаққа жіберілгенін тексеріңіз.
