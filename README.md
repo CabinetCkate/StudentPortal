@@ -47,10 +47,10 @@ cd StudentPortal
 ```powershell
 dotnet user-secrets init --project .\StudentPortal.csproj
 dotnet user-secrets set "SeedAdmin:Email" "admin@example.edu" --project .\StudentPortal.csproj
-dotnet user-secrets set "SeedAdmin:Password" "[REDACTED]" --project .\StudentPortal.csproj
+dotnet user-secrets set "SeedAdmin:Password" "<ӨЗІҢІЗ ТАҢДАҒАН ҚҰПИЯСӨЗ>" --project .\StudentPortal.csproj
 ```
 
-Жоғарыдағы мысалдарды тек жаңа жергілікті клонда орындаңыз; нақты email және құпиясөзді өзіңіз таңдап, оларды GitHub-та жарияламаңыз. Құпиясөз кемінде 8 таңбалы, бас және кіші әріп, сан және арнайы таңба болсын. Өндірісте `SeedAdmin__Email` және `SeedAdmin__Password` environment variables немесе құпия басқару жүйесін қолданыңыз. User Secrets тек жергілікті Development қоймасы болып табылады.
+`<ӨЗІҢІЗ ТАҢДАҒАН ҚҰПИЯСӨЗ>` орнына кемінде 8 таңбалы, бас және кіші әріп, сан, арнайы таңба қамтитын өз құпиясөзіңізді енгізіңіз. Нақты email мен құпиясөзді GitHub-қа жарияламаңыз. Өндірісте `SeedAdmin__Email` және `SeedAdmin__Password` environment variables немесе құпия басқару жүйесін қолданыңыз. User Secrets тек жергілікті Development қоймасы болып табылады.
 
 `appsettings.json` ішінде тек `Data Source=studentportal.db` сияқты құпиясыз жергілікті SQLite жолы бар. `.gitignore` дерекқор файлдарын, `bin/`, `obj/`, `appsettings.Development.json` және құпияларға арналған файлдарды елемейді.
 
